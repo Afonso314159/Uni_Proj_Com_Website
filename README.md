@@ -1,1 +1,3 @@
-# Uni_Proj_Com_Website
+Projeto de final de curso de universidade
+
+Website de comunicacao social
