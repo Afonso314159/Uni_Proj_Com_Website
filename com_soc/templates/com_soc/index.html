@@ -1,0 +1,9 @@
+{% if latest_noticia_list %}
+    <ul>
+    {% for noticia in latest_noticia_list %}
+        <li><a href="/com_soc/{{noticia.id}}/">{{ noticia.noticia_texto }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No news are available.</p>
+{% endif %}
