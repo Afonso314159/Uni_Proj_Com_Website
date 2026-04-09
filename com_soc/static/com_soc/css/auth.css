@@ -1,0 +1,189 @@
+/* ==========================================
+   Authentication Pages Styles (Login/Register)
+   ========================================== */
+
+body.auth-page {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Auth Header */
+body.auth-page header {
+    background: transparent;
+    box-shadow: none;
+}
+
+/* Main Content */
+.auth-main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-xl);
+}
+
+/* ==========================================
+   Auth Container (Card)
+   ========================================== */
+.auth-container {
+    background: var(--white);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-lg);
+    padding: var(--spacing-2xl);
+    width: 100%;
+    max-width: 420px;
+}
+
+.auth-container.register {
+    max-width: 480px;
+}
+
+.auth-container h2 {
+    color: var(--text-dark);
+    font-size: 1.75rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.auth-subtitle {
+    color: var(--gray-600);
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    font-size: 0.9375rem;
+}
+
+/* ==========================================
+   Auth Links (Switch between login/register)
+   ========================================== */
+.auth-link {
+    text-align: center;
+    margin-top: var(--spacing-lg);
+    color: var(--gray-600);
+    font-size: 0.9375rem;
+}
+
+.auth-link a {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.auth-link a:hover {
+    color: var(--primary-light);
+    text-decoration: underline;
+}
+
+/* ==========================================
+   Password Strength Indicator
+   ========================================== */
+.password-strength {
+    margin-top: var(--spacing-sm);
+}
+
+.strength-bar {
+    height: 4px;
+    background-color: var(--gray-100);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: var(--spacing-xs);
+}
+
+.strength-bar-fill {
+    height: 100%;
+    width: 0;
+    border-radius: 2px;
+    transition: width var(--transition-normal), background-color var(--transition-normal);
+}
+
+.strength-bar-fill.weak {
+    width: 33%;
+    background-color: var(--error-text);
+}
+
+.strength-bar-fill.medium {
+    width: 66%;
+    background-color: #f59e0b;
+}
+
+.strength-bar-fill.strong {
+    width: 100%;
+    background-color: var(--success-text);
+}
+
+.strength-text {
+    font-size: 0.75rem;
+    color: var(--gray-500);
+}
+
+.strength-text.weak {
+    color: var(--error-text);
+}
+
+.strength-text.medium {
+    color: #f59e0b;
+}
+
+.strength-text.strong {
+    color: var(--success-text);
+}
+
+/* ==========================================
+   Form Validation States
+   ========================================== */
+.form-group.has-error input {
+    border-color: var(--error-text);
+}
+
+.form-group.has-success input {
+    border-color: var(--success-text);
+}
+
+/* ==========================================
+   Loading State for Submit Button
+   ========================================== */
+.btn.loading {
+    position: relative;
+    color: transparent;
+    pointer-events: none;
+}
+
+.btn.loading::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    left: 50%;
+    margin-left: -10px;
+    margin-top: -10px;
+    border: 2px solid var(--white);
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==========================================
+   Responsive Styles
+   ========================================== */
+@media (max-width: 480px) {
+    .auth-main {
+        padding: var(--spacing-md);
+    }
+
+    .auth-container {
+        padding: 1.75rem;
+    }
+
+    .auth-container h2 {
+        font-size: 1.5rem;
+    }
+}

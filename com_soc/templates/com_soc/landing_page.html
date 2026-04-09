@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENIDH - Comunicação Social</title>
+    <link rel="stylesheet" href="{% static 'com_soc/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'com_soc/css/landing.css' %}">
+</head>
+<body class="landing-page">
+    <header>
+        <div class="logo">ENIDH - <span>Comunicação Social</span></div>
+        <a href="{% url 'login' %}" class="header-btn">Login</a>
+    </header>
+
+    <main class="landing-main">
+        {% if featured_news %}
+        <div class="news-grid">
+            <!-- Left Column -->
+            <div class="side-column">
+                {% for news in side_news|slice:":2" %}
+                <a href="{% url 'register' %}" class="news-card">
+                    <div class="news-card-content">
+                        <h3>{{ news.titulo }}</h3>
+                        <p>{{ news.corpo_texto|truncatewords:20 }}</p>
+                    </div>
+                </a>
+                {% empty %}
+                <div class="news-card">
+                    <div class="news-card-content">
+                        <h3>Em breve</h3>
+                        <p>Mais notícias em breve...</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Featured News (Center) -->
+            <a href="{% url 'register' %}" class="featured-news">
+                <h2>{{ featured_news.titulo }}</h2>
+                <div class="featured-image">
+                    {% if featured_news.imagens.first %}
+                    <img src="{{ featured_news.imagens.first.imagem.url }}" alt="{{ featured_news.titulo }}">
+                    {% else %}
+                    <span class="featured-image-placeholder">Imagem não disponível</span>
+                    {% endif %}
+                </div>
+                <p class="featured-description">{{ featured_news.corpo_texto|truncatewords:40 }}</p>
+            </a>
+
+            <!-- Right Column -->
+            <div class="side-column">
+                {% for news in side_news|slice:"2:4" %}
+                <a href="{% url 'register' %}" class="news-card">
+                    <div class="news-card-content">
+                        <h3>{{ news.titulo }}</h3>
+                        <p>{{ news.corpo_texto|truncatewords:20 }}</p>
+                    </div>
+                </a>
+                {% empty %}
+                <div class="news-card">
+                    <div class="news-card-content">
+                        <h3>Em breve</h3>
+                        <p>Mais notícias em breve...</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Ver Mais Button -->
+        <div class="ver-mais-container">
+            <a href="{% url 'register' %}" class="btn btn-primary">Ver Mais</a>
+        </div>
+
+        {% else %}
+        <!-- Empty State when no news -->
+        <div class="empty-state">
+            <h2>Bem-vindo ao ENIDH - Comunicação Social</h2>
+            <p>Ainda não existem notícias publicadas. Registe-se para começar a explorar.</p>
+            <a href="{% url 'register' %}" class="btn btn-primary">Registar</a>
+        </div>
+        {% endif %}
+    </main>
+</body>
+</html>

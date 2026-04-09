@@ -7,7 +7,34 @@ from .forms import RegisterForm
 from django.contrib.auth import login, logout, authenticate
 
 def landing_page(request):
-    return render(request, "com_soc/landing_page.html") # A simple page with a "Enter Site" or "Login" button
+    # Get published news, prioritize ones with images for the featured spot
+    all_news = Noticia.objects.filter(
+        estado_publicacao=Noticia.EstadoPublicacao.PUBLICADA
+    ).order_by("-data_publicacao", "-data_criacao")[:6]
+    
+    # Find a featured news (one with an image) for the center spot
+    featured_news = None
+    side_news = []
+    
+    for news in all_news:
+        if featured_news is None and news.imagens.exists():
+            featured_news = news
+        else:
+            side_news.append(news)
+        if len(side_news) >= 5:
+            break
+    
+    # If no news with image, use first news as featured
+    if featured_news is None and all_news.exists():
+        featured_news = all_news.first()
+        side_news = list(all_news[1:6])
+    
+    context = {
+        "featured_news": featured_news,
+        "side_news": side_news,
+    }
+    return render(request, "com_soc/landing_page.html", context)
+
 
 def register(request):
     if request.method == 'POST':
@@ -22,14 +49,46 @@ def register(request):
 
 @login_required
 def home(request):
-    latest_noticia_list = Noticia.objects.order_by("-data_criacao")[:5]
-    context = {"latest_noticia_list": latest_noticia_list}
+    """Home page - shows only PUBLIC news"""
+    news_list = Noticia.objects.filter(
+        estado_publicacao=Noticia.EstadoPublicacao.PUBLICADA,
+        categoria=Noticia.CategoriaAcesso.PUBLICO
+    ).order_by("-data_publicacao", "-data_criacao")
+    
+    context = {
+        "news_list": news_list,
+        "page_type": "home",
+        "page_title": "Notícias Públicas",
+        "page_subtitle": "Últimas notícias de acesso público"
+    }
     return render(request, "com_soc/home.html", context)
 
-def noticia(request, noticia_id):
-    return HttpResponse("You're looking at noticia %s." % noticia_id)
+
+@login_required
+def subscriber(request):
+    """Subscriber page - shows PUBLIC and PREMIUM news"""
+    news_list = Noticia.objects.filter(
+        estado_publicacao=Noticia.EstadoPublicacao.PUBLICADA
+    ).order_by("-data_publicacao", "-data_criacao")
+    
+    context = {
+        "news_list": news_list,
+        "page_type": "subscriber",
+        "page_title": "Notícias Premium",
+        "page_subtitle": "Conteúdo exclusivo para subscritores"
+    }
+    return render(request, "com_soc/subscriber.html", context)
 
 
-def comentario(request, noticia_id):
-    response = "You're looking at the comment of noticia %s."
-    return HttpResponse(response % noticia_id)
+@login_required
+def noticia_detail(request, noticia_id):
+    """News detail page - minimal placeholder for now"""
+    try:
+        news = Noticia.objects.get(pk=noticia_id)
+    except Noticia.DoesNotExist:
+        news = None
+    
+    context = {
+        "news": news,
+    }
+    return render(request, "com_soc/noticia_detail.html", context)

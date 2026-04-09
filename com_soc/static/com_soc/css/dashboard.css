@@ -1,0 +1,494 @@
+/* ==========================================
+   Dashboard Layout Styles
+   (Home & Subscriber Pages)
+   ========================================== */
+
+/* Main Layout Container */
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--gray-50);
+}
+
+/* ==========================================
+   Sidebar
+   ========================================== */
+.sidebar {
+    width: 70px;
+    background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: var(--spacing-lg) 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 100;
+}
+
+.sidebar-top,
+.sidebar-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.sidebar-top {
+    padding-top: var(--spacing-md);
+}
+
+.sidebar-bottom {
+    padding-bottom: var(--spacing-md);
+}
+
+/* Space for future admin/editor icons */
+.sidebar-middle {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: var(--spacing-xl);
+    gap: var(--spacing-sm);
+}
+
+.sidebar-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.7);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    position: relative;
+    text-decoration: none;
+}
+
+.sidebar-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+}
+
+.sidebar-btn.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: var(--white);
+}
+
+.sidebar-btn svg {
+    width: 24px;
+    height: 24px;
+    stroke-width: 2;
+}
+
+/* Tooltip */
+.sidebar-btn::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 100%;
+    margin-left: 12px;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: var(--primary-dark);
+    color: var(--white);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-fast);
+    pointer-events: none;
+    box-shadow: var(--shadow-md);
+}
+
+.sidebar-btn::before {
+    content: '';
+    position: absolute;
+    left: 100%;
+    margin-left: 4px;
+    border: 6px solid transparent;
+    border-right-color: var(--primary-dark);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-fast);
+}
+
+.sidebar-btn:hover::after,
+.sidebar-btn:hover::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Divider in sidebar */
+.sidebar-divider {
+    width: 36px;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.15);
+    margin: var(--spacing-sm) 0;
+}
+
+/* ==========================================
+   Main Content Area
+   ========================================== */
+.main-content {
+    flex: 1;
+    margin-left: 70px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Top Bar */
+.top-bar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: var(--spacing-lg) var(--spacing-xl);
+    gap: var(--spacing-md);
+    background-color: var(--white);
+    border-bottom: 1px solid var(--gray-100);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.top-bar-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border: 2px solid var(--gray-100);
+    color: var(--gray-500);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.top-bar-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background-color: var(--gray-50);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.top-bar-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2;
+}
+
+.top-bar-btn.logout-btn:hover {
+    border-color: var(--error-text);
+    color: var(--error-text);
+}
+
+/* ==========================================
+   News Feed
+   ========================================== */
+.news-feed {
+    flex: 1;
+    padding: var(--spacing-xl);
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.news-feed-header {
+    margin-bottom: var(--spacing-xl);
+}
+
+.news-feed-header h1 {
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    font-weight: 700;
+}
+
+.news-feed-header p {
+    color: var(--gray-500);
+    font-size: 0.9375rem;
+    margin-top: var(--spacing-xs);
+}
+
+/* News Card */
+.news-card {
+    background-color: var(--white);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+    border: 1px solid var(--gray-100);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+    display: block;
+}
+
+.news-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--accent);
+}
+
+.news-card:active {
+    transform: translateY(-1px);
+}
+
+.news-card-title {
+    font-size: 1.25rem;
+    color: var(--text-dark);
+    font-weight: 700;
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.4;
+    transition: color var(--transition-fast);
+}
+
+.news-card:hover .news-card-title {
+    color: var(--primary);
+}
+
+.news-card-description {
+    color: var(--gray-600);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.news-card-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--gray-100);
+    font-size: 0.8125rem;
+    color: var(--gray-500);
+}
+
+.news-card-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-public {
+    background-color: var(--success-bg);
+    color: var(--success-text);
+}
+
+.badge-premium {
+    background-color: #fef3c7;
+    color: #d97706;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: var(--spacing-2xl) var(--spacing-xl);
+    color: var(--gray-500);
+}
+
+.empty-state svg {
+    width: 64px;
+    height: 64px;
+    margin-bottom: var(--spacing-lg);
+    stroke-width: 1.5;
+    color: var(--gray-300);
+}
+
+.empty-state h3 {
+    font-size: 1.125rem;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-sm);
+}
+
+/* ==========================================
+   Chat Icon (Subscriber Page Only)
+   ========================================== */
+.chat-fab {
+    position: fixed;
+    bottom: var(--spacing-xl);
+    right: var(--spacing-xl);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    box-shadow: var(--shadow-lg);
+    transition: all var(--transition-fast);
+    z-index: 90;
+}
+
+.chat-fab:hover {
+    transform: scale(1.08);
+    box-shadow: 0 12px 45px rgba(30, 74, 110, 0.35);
+}
+
+.chat-fab svg {
+    width: 28px;
+    height: 28px;
+    stroke-width: 2;
+}
+
+/* ==========================================
+   Modal / Popup Styles
+   ========================================== */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(13, 33, 55, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-fast);
+    backdrop-filter: blur(4px);
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal {
+    background-color: var(--white);
+    border-radius: var(--radius-2xl);
+    padding: var(--spacing-xl);
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    transform: scale(0.9) translateY(20px);
+    transition: all var(--transition-fast);
+}
+
+.modal-overlay.active .modal {
+    transform: scale(1) translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.modal-header h2 {
+    font-size: 1.25rem;
+    color: var(--text-dark);
+    font-weight: 700;
+}
+
+.modal-close {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border: none;
+    color: var(--gray-500);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.modal-close:hover {
+    background-color: var(--gray-100);
+    color: var(--text-dark);
+}
+
+.modal-close svg {
+    width: 20px;
+    height: 20px;
+}
+
+.modal-body {
+    color: var(--gray-600);
+    line-height: 1.6;
+}
+
+.modal-body p {
+    margin-bottom: var(--spacing-md);
+}
+
+.modal-body p:last-child {
+    margin-bottom: 0;
+}
+
+/* ==========================================
+   Responsive
+   ========================================== */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 60px;
+    }
+
+    .main-content {
+        margin-left: 60px;
+    }
+
+    .sidebar-btn {
+        width: 42px;
+        height: 42px;
+    }
+
+    .sidebar-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .news-feed {
+        padding: var(--spacing-lg);
+    }
+
+    .news-card {
+        padding: var(--spacing-lg);
+    }
+
+    .chat-fab {
+        bottom: var(--spacing-lg);
+        right: var(--spacing-lg);
+        width: 54px;
+        height: 54px;
+    }
+}
+
+@media (max-width: 480px) {
+    .top-bar {
+        padding: var(--spacing-md);
+    }
+
+    .top-bar-btn {
+        width: 38px;
+        height: 38px;
+    }
+
+    .news-card-title {
+        font-size: 1.125rem;
+    }
+}
