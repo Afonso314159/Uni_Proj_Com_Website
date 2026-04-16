@@ -39,13 +39,11 @@
             <!-- Featured News (Center) -->
             <a href="{% url 'register' %}" class="featured-news">
                 <h2>{{ featured_news.titulo }}</h2>
+                {% if featured_news.imagens.first %}
                 <div class="featured-image">
-                    {% if featured_news.imagens.first %}
                     <img src="{{ featured_news.imagens.first.imagem.url }}" alt="{{ featured_news.titulo }}">
-                    {% else %}
-                    <span class="featured-image-placeholder">Imagem não disponível</span>
-                    {% endif %}
                 </div>
+                {% endif %}
                 <p class="featured-description">{{ featured_news.corpo_texto|truncatewords:40 }}</p>
             </a>
 
