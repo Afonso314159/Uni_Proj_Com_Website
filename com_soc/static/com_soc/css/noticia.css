@@ -77,20 +77,6 @@
     pointer-events: none;
 }
 
-/* Category chips — visible on dark bg */
-.article-category {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: rgba(176, 214, 255, 0.9);
-    border-left: 3px solid rgba(255, 255, 255, 0.45);
-    padding-left: 8px;
-    line-height: 1;
-    margin-bottom: 18px;
-}
-
 /* Title — white text, handles long headlines */
 .article-title {
     font-family: 'Playfair Display', serif;

@@ -52,23 +52,30 @@ class Subscricao(models.Model):
 
 
 class Noticia(models.Model):
+
     class EstadoPublicacao(models.TextChoices):
-        PRE_AI = 'Pre_AI', 'Pré-AI'
-        PENDENTE = 'Pendente', 'Pendente'
-        PUBLICADA = 'Publicada', 'Publicada'
+        PRE_AI    = 'pre_ai',    'Pré-AI'
+        PENDENTE  = 'pendente',  'Pendente'
+        PUBLICADA = 'publicada', 'Publicada'
 
-    class CategoriaAcesso(models.TextChoices):
-        PUBLICO = 'Publico', 'Público'
-        PREMIUM = 'Premium', 'Premium'
+    class Categoria(models.TextChoices):
+        POLITICA      = 'politica',      'Política'
+        ECONOMIA      = 'economia',      'Economia'
+        TECNOLOGIA    = 'tecnologia',    'Tecnologia'
+        CIENCIA       = 'ciencia',       'Ciência'
+        EDUCACAO      = 'educacao',      'Educação'
+        INTERNACIONAL = 'internacional', 'Internacional'
+        NACIONAL      = 'nacional',      'Nacional'
+        DESPORTO      = 'desporto',      'Desporto'
+        CULTURA       = 'cultura',       'Cultura'
+        MARITIMO      = 'maritimo',      'Marítimo'
 
-    class CategoriaPolitica(models.TextChoices):
-        POLITICA = 'Politica', 'Política'
-        COMIDA = 'Comida', 'Comida'
-        # add more as needed
+    class Acesso(models.TextChoices):
+        PUBLICO = 'publico', 'Público'
+        PREMIUM = 'premium', 'Premium'
 
-    class CategoriaPovo(models.TextChoices):
-        NOTICIAS_DO_POVO = 'Noticias_do_Povo', 'Notícias do Povo'
-        # add more as needed
+    class OrigemNoticia(models.TextChoices):
+        NOTICIAS_DO_POVO = 'noticias_do_povo', 'Notícias do Povo'
 
     titulo = models.CharField(max_length=255)
     corpo_texto = models.TextField()
@@ -80,9 +87,11 @@ class Noticia(models.Model):
         default=EstadoPublicacao.PENDENTE
     )
     ai_score = models.FloatField(null=True, blank=True)
-    categoria = models.CharField(max_length=20, choices=CategoriaAcesso.choices)
-    categoria_2 = models.CharField(max_length=20, choices=CategoriaPolitica.choices, null=True, blank=True)
-    categoria_3 = models.CharField(max_length=20, choices=CategoriaPovo.choices, null=True, blank=True)
+    acesso = models.CharField(max_length=20, choices=Acesso.choices)
+    categoria_1 = models.CharField(max_length=20, choices=Categoria.choices, null=True, blank=True)
+    categoria_2 = models.CharField(max_length=20, choices=Categoria.choices, null=True, blank=True)
+    categoria_3 = models.CharField(max_length=20, choices=Categoria.choices, null=True, blank=True)
+    origem_noticia = models.CharField(max_length=20, choices=OrigemNoticia.choices, null=True, blank=True)
     editor_aprovador = models.ForeignKey(
         Utilizador,
         on_delete=models.SET_NULL,

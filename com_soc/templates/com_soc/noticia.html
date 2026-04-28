@@ -20,15 +20,6 @@
  
   <!-- Article header -->
   <header class="article-header">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;flex-wrap:wrap;">
-      {% if news.categoria_2 %}
-      <span class="article-category">{{ news.get_categoria_2_display }}</span>
-      {% endif %}
-      {% if news.categoria_3 %}
-      <span class="article-category">{{ news.get_categoria_3_display }}</span>
-      {% endif %}
-    </div>
- 
     <h1 class="article-title">{{ news.titulo }}</h1>
  
     <div class="article-meta">
@@ -90,7 +81,9 @@
     <div class="article-footer">
     <p class="footer-label">Categorias</p>
     <div class="tag-list">
-        <span class="tag">{{ news.get_categoria_display }}</span>
+        {% if news.categoria_1 %}
+        <span class="tag">{{ news.get_categoria_1_display }}</span>
+        {% endif %}
         {% if news.categoria_2 %}
         <span class="tag">{{ news.get_categoria_2_display }}</span>
         {% endif %}

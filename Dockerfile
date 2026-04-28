@@ -26,10 +26,13 @@ FROM python:3.12-slim
 RUN apt-get update && apt-get install -y --no-install-recommends \
     default-libmysqlclient-dev && \
     rm -rf /var/lib/apt/lists/*
-    
+
+#to have user permissions
 RUN useradd -m -r appuser && \
     mkdir /app && \
     chown -R appuser:appuser /app
+
+RUN mkdir -p /app/media && chown -R appuser:appuser /app/media 
 
 # Copy installed packages from builder
 COPY --from=builder /usr/local/lib/python3.12/site-packages/ /usr/local/lib/python3.12/site-packages/

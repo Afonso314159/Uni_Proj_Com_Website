@@ -141,17 +141,53 @@ function closeModal(modal) {
    Create News Modal
    ========================================== */
 function initCreateNews() {
+
+    const form = document.getElementById('news-create-form');
+    if (!form) return;
+
+        // Category chips — max 3
+    const chips = document.querySelectorAll('.news-chip');
+    const catInputs = ['nc-cat-1', 'nc-cat-2', 'nc-cat-3'].map(id => document.getElementById(id));
+    let selectedCats = [];
+
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            const val = chip.dataset.value;
+            if (chip.classList.contains('selected')) {
+                selectedCats = selectedCats.filter(v => v !== val);
+                chip.classList.remove('selected');
+            } else {
+                if (selectedCats.length >= 3) return;
+                selectedCats.push(val);
+                chip.classList.add('selected');
+            }
+            // Disable unselected chips when 3 are chosen
+            chips.forEach(c => {
+                if (!c.classList.contains('selected')) {
+                    c.classList.toggle('disabled', selectedCats.length >= 3);
+                }
+            });
+            // Populate hidden inputs
+            catInputs.forEach((input, i) => input.value = selectedCats[i] || '');
+        });
+    });
+
+    // Access toggle
+    document.querySelectorAll('.news-access-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.news-access-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('nc-acesso').value = btn.dataset.value;
+        });
+    });
     const fileInput = document.getElementById('news-create-images-input');
     const previewsContainer = document.getElementById('news-create-previews');
     const submitBtn = document.getElementById('news-create-submit');
     const cancelBtn = document.getElementById('news-create-cancel');
-    const form = document.getElementById('news-create-form');
     const errorEl = document.getElementById('news-create-error');
     const tituloInput = document.getElementById('news-create-titulo');
     const corpoInput = document.getElementById('news-create-corpo');
     const modal = document.getElementById('add-news-modal');
-
-    if (!form) return;
 
     // Track selected files manually so we can delete individually
     let selectedFiles = [];
@@ -243,12 +279,21 @@ function initCreateNews() {
                 return;
             }
 
+            if (selectedCats.length === 0) {
+                showError('Por favor selecione pelo menos uma categoria.');
+                return;
+            }   
+
             // Build FormData manually with our tracked files
             const fd = new FormData();
             const csrf = form.querySelector('[name=csrfmiddlewaretoken]');
             if (csrf) fd.append('csrfmiddlewaretoken', csrf.value);
             fd.append('titulo', titulo);
             fd.append('corpo_texto', corpo);
+            fd.append('acesso', document.getElementById('nc-acesso')?.value || 'publico');
+            fd.append('categoria_1', document.getElementById('nc-cat-1')?.value || '');
+            fd.append('categoria_2', document.getElementById('nc-cat-2')?.value || '');
+            fd.append('categoria_3', document.getElementById('nc-cat-3')?.value || '');
             selectedFiles.forEach(f => fd.append('imagens', f));
 
             submitBtn.disabled = true;
@@ -274,9 +319,22 @@ function initCreateNews() {
     }
 
     function resetForm() {
-        form.reset();
-        selectedFiles = [];
-        previewsContainer.innerHTML = '';
-        hideError();
+    form.reset();
+    selectedFiles = [];
+    previewsContainer.innerHTML = '';
+    hideError();
+
+    // Reset chips
+    selectedCats = [];
+    chips.forEach(c => c.classList.remove('selected', 'disabled'));
+    catInputs.forEach(i => { if(i) i.value = ''; });
+
+    // Reset access toggle
+    document.querySelectorAll('.news-access-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.value === 'publico');
+    });
+    const acesso = document.getElementById('nc-acesso');
+    if (acesso) acesso.value = 'publico';
     }
 }
+

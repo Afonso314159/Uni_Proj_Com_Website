@@ -59,34 +59,32 @@ def register(request):
 
 @login_required
 def home(request):
-    """Home page - shows only PUBLIC news"""
     news_list = Noticia.objects.filter(
         estado_publicacao=Noticia.EstadoPublicacao.PUBLICADA,
-        categoria=Noticia.CategoriaAcesso.PUBLICO
+        acesso=Noticia.Acesso.PUBLICO
     ).order_by("-data_publicacao", "-data_criacao")
     
     context = {
         "news_list": news_list,
         "page_type": "home",
         "page_title": "Notícias Públicas",
-        "page_subtitle": "Últimas notícias de acesso público"
+        "page_subtitle": "Últimas notícias de acesso público",
     }
     return render(request, "com_soc/home.html", context)
 
 
 @sub_required
 def subscriber(request):
-    """Subscriber page - shows only PREMIUM news"""
     news_list = Noticia.objects.filter(
         estado_publicacao=Noticia.EstadoPublicacao.PUBLICADA,
-        categoria=Noticia.CategoriaAcesso.PREMIUM
+        acesso=Noticia.Acesso.PREMIUM
     ).order_by("-data_publicacao", "-data_criacao")
     
     context = {
         "news_list": news_list,
         "page_type": "subscriber",
         "page_title": "Notícias Exclusivas",
-        "page_subtitle": "Conteúdo exclusivo para subscritores"
+        "page_subtitle": "Conteúdo exclusivo para subscritores",
     }
     return render(request, "com_soc/subscriber.html", context)
 
@@ -109,7 +107,7 @@ def noticia_detail(request, noticia_id):
 
     user_is_subscriber = (request.user.role == 'Subscritor' or request.user.is_staff or request.user.is_superuser)
 
-    if noticia.categoria == 'Premium':
+    if noticia.acesso == 'Premium':
         if not user_is_subscriber:
             return redirect('sub_ad')
     
@@ -156,13 +154,16 @@ def add_comment(request, noticia_id):
 @require_POST
 @login_required
 def create_noticia(request):
-    form = NoticiaForm(request.POST)
+    form = NoticiaForm(request.POST, is_staff=request.user.is_staff or request.user.is_superuser)
     if not form.is_valid():
         return JsonResponse({"success": False, "error": form.errors}, status=400)
 
     noticia_obj = form.save(commit=False)
     noticia_obj.autor = request.user
-    noticia_obj.categoria = Noticia.CategoriaAcesso.PUBLICO
+    noticia_obj.acesso = request.POST.get('acesso', 'publico')
+    noticia_obj.categoria_1 = request.POST.get('categoria_1') or None
+    noticia_obj.categoria_2 = request.POST.get('categoria_2') or None
+    noticia_obj.categoria_3 = request.POST.get('categoria_3') or None   
     noticia_obj.data_criacao = timezone.now().date()
 
     user_editor_or_admin = (request.user.is_staff or request.user.is_superuser)
@@ -173,7 +174,8 @@ def create_noticia(request):
         noticia_obj.editor_aprovador = request.user
     else:
         noticia_obj.estado_publicacao = Noticia.EstadoPublicacao.PRE_AI
-        noticia_obj.categoria_3 = Noticia.CategoriaPovo.NOTICIAS_DO_POVO
+        noticia_obj.origem_noticia = Noticia.OrigemNoticia.NOTICIAS_DO_POVO
+        noticia_obj.acesso = Noticia.Acesso.PUBLICO
 
     noticia_obj.save()
 
