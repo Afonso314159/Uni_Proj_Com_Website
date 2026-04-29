@@ -32,6 +32,20 @@
                     </svg>
                     <span class="sidebar-label">Subscritor</span>
                 </a>
+
+                {% if request.user.is_staff or request.user.is_superuser %}
+                <a href="{% url 'revisao' %}" class="sidebar-btn sidebar-btn--staff {% if page_type == 'revisao' %}active{% endif %}" data-tooltip="Revisão">
+                    <span class="sidebar-emoji">✍️</span>
+                    <span class="sidebar-label">Revisão</span>
+                </a>
+                {% endif %}
+
+                {% if request.user.is_superuser %}
+                <a href="{% url 'admin:index' %}" class="sidebar-btn sidebar-btn--admin" data-tooltip="Admin" target="_blank">
+                    <span class="sidebar-emoji">⚙️</span>
+                    <span class="sidebar-label">Admin</span>
+                </a>
+                {% endif %}
             </div>
 
             <!-- Bottom Navigation -->
